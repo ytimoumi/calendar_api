@@ -1,0 +1,54 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+scalar Time
+
+type Calendar{
+  id           :   Int!
+  start        :   Time!
+  end          :   Time!
+}
+
+input ToReserve{
+  start        :   Time!
+  end          :   Time!
+  title        :   String!
+  email        :   String!
+}
+type Response{
+  code: Int!
+  message: String!
+}
+
+type Todo {
+  id: ID!
+  text: String!
+  done: Boolean!
+  user: User!
+}
+
+type User {
+  id: ID!
+  name: String!
+}
+
+type Query {
+  getCalendar:[Calendar]! #get available slots
+}
+
+input NewTodo {
+  text: String!
+  userId: String!
+}
+
+input Availability {
+  start        :   Time!
+  end          :   Time!
+}
+
+type Mutation {
+  createReservation(idAvailability: Int!, input: ToReserve!): Response!
+  deleteReservation(id: Int!, email: String!): Response!
+  createAvailability(input: Availability!): Response!
+  deleteAvailability(id: Int!): Response!
+}

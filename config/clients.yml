@@ -1,0 +1,10 @@
+clients:
+  test:
+    username: yassine
+    database: giskard_db
+    database-user: sf_user
+    database-password: UzTQ4356NffpN3i9
+    database-host: mysql_giskard
+    database-port: 3306
+    database-driver: mysql
+    client-name: test

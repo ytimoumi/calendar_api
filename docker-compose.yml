@@ -1,0 +1,51 @@
+version: '3'
+services:
+  giskard_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/go/src/giskard/
+    environment:
+      MYSQL_DATABASE: giskard_db
+      MYSQL_USER: sf_user
+      MYSQL_PASSWORD: UzTQ4356NffpN3i9
+    ports:
+      - "7010:8080"
+    depends_on:
+      - mysql_giskard
+    networks:
+      - giskard_api
+
+  mysql_giskard:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: giskard_db
+      MYSQL_USER: sf_user
+      MYSQL_PASSWORD: UzTQ4356NffpN3i9
+      MYSQL_ROOT_PASSWORD: UzTQ4356NffpN3i9
+      TZ: UTC
+    command: [ 'mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci','--default-time-zone=+01:00','--max_allowed_packet=512M' ]
+    volumes:
+      - ${MYSQL_PATH}:/var/lib/mysql
+      - ./mysql_init/:/docker-entrypoint-initdb.d/
+    networks:
+      - giskard_api
+    restart: always
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_HOST=mysql_giskard
+    networks:
+      - giskard_api
+    ports:
+      - "7011:80"
+    depends_on:
+      - mysql_giskard
+    restart: always
+
+networks:
+  giskard_api:
+    external:
+      name: ytimoumi-giskard

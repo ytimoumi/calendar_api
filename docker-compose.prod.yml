@@ -1,0 +1,50 @@
+version: '3'
+services:
+  giskard_api:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: ${APP_CNAME}
+    image: ${APP_INAME}
+    environment:
+      MYSQL_DATABASE: giskard_db
+      MYSQL_USER: sf_user
+      MYSQL_PASSWORD: UzTQ4356NffpN3i9
+      MYSQL_ROOT_PASSWORD: UzTQ4356NffpN3i9
+    ports:
+      - "${API_PORT}:8080"
+    depends_on:
+      - mysql_giskard
+    networks:
+      - giskard_api
+  mysql_giskard:
+    container_name: ${MYSQL_CNAME}
+    image: mysql:5.7
+    environment:
+      - MYSQL_DATABASE=giskard_db
+      - MYSQL_USER=sf_user
+      - MYSQL_PASSWORD=UzTQ4356NffpN3i9
+      - MYSQL_ROOT_PASSWORD=UzTQ4356NffpN3i9
+    volumes:
+      - ${MYSQL_PATH}:/var/lib/mysql:rw
+    networks:
+      - giskard_api
+    restart: always
+
+  phpmyadmin:
+    container_name: ${PHPMYADMIN_CNAME}
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_HOST=mysql_giskard
+    networks:
+      - giskard_api
+    ports:
+      - "${PHPMYADMIN_PORT}:80"
+    depends_on:
+      - mysql_giskard
+    restart: always
+
+networks:
+  giskard_api:
+    external:
+      name: ${EXTERNAL_NETWORK_NAME}

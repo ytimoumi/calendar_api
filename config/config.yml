@@ -1,0 +1,5 @@
+clients:
+  mapping:
+    test: "test"
+clients-regex:
+  mapping: "test"
