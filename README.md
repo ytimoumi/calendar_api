@@ -1,4 +1,4 @@
-# giskard_api
+# Calendar API
 > A GraphQl API with Golang
 
 ###  DEV Environment DOCKER
